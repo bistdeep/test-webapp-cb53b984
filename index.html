@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .light {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .dark {
+            background-color: #333333;
+            color: #ffffff;
+        }
+        header {
+            padding: 20px;
+            text-align: center;
+        }
+        .toggle {
+            cursor: pointer;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+        .table-container {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .details {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #dddddd;
+        }
+        @media (max-width: 600px) {
+            th, td {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body class="light">
+    <header>
+        <h1>Test Project</h1>
+        <button class="toggle" onclick="toggleTheme()">Toggle Dark/Light Theme</button>
+    </header>
+    <div class="table-container">
+        <h2>CSV Data</h2>
+        <input type="text" id="filterInput" placeholder="Filter by name..." onkeyup="filterTable()">
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="showDetails(1)"><td>1</td><td>Product A</td><td>Electronics</td><td>$199.99</td></tr>
+                <tr onclick="showDetails(2)"><td>2</td><td>Product B</td><td>Books</td><td>$29.99</td></tr>
+                <tr onclick="showDetails(3)"><td>3</td><td>Product C</td><td>Clothing</td><td>$49.99</td></tr>
+                <tr onclick="showDetails(4)"><td>4</td><td>Product D</td><td>Electronics</td><td>$299.99</td></tr>
+                <tr onclick="showDetails(5)"><td>5</td><td>Product E</td><td>Home</td><td>$89.99</td></tr>
+            </tbody>
+        </table>
+        <div id="details" class="details"></div>
+    </div>
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark');
+            body.classList.toggle('light');
+        }
+
+        function filterTable() {
+            const input = document.getElementById('filterInput');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('dataTable');
+            const tr = table.getElementsByTagName('tr');
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td')[1];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? '' : 'none';
+                }
+            }
+        }
+
+        function showDetails(id) {
+            const details = document.getElementById('details');
+            const data = [
+                { id: 1, name: 'Product A', category: 'Electronics', price: '$199.99', description: 'High-quality electronic product.' },
+                { id: 2, name: 'Product B', category: 'Books', price: '$29.99', description: 'A fascinating book.' },
+                { id: 3, name: 'Product C', category: 'Clothing', price: '$49.99', description: 'Stylish clothing item.' },
+                { id: 4, name: 'Product D', category: 'Electronics', price: '$299.99', description: 'Premium electronic device.' },
+                { id: 5, name: 'Product E', category: 'Home', price: '$89.99', description: 'Useful home product.' }
+            ];
+            const item = data.find(d => d.id === id);
+            details.innerHTML = `<h3>${item.name}</h3><p>Category: ${item.category}</p><p>Price: ${item.price}</p><p>Description: ${item.description}</p>`;
+            details.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
